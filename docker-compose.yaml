@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:16-bullseye
+    container_name: postgres-test
+    pid: host
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=postgres
+    network_mode: host
+    user: 999:999
+    volumes:
+      - ./tmp/var/data:/var/lib/postgresql/data
+      - ./tmp/var/.pgpass:/var/lib/postgresql/.pgpass
+      - ./tmp/log:/var/log/postgresql
+      - ./tmp/run:/var/run/postgresql
+      - ./postgres-start.sh:/postgres-start.sh
+      - ./init_user.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    command: ["./postgres-start.sh"]
+
+  efm:
+    image: rakibulhossain/efm-test:0.0.21
+    container_name: efm-test
+    pid: host
+    privileged: true
+    volumes:
+      - ./tmp/var/data:/var/lib/postgresql/data
+      - ./tmp/var/.pgpass:/var/lib/postgresql/.pgpass
+      - ./main.properties:/etc/edb/efm-5.0/main.properties
+      - ./main.nodes:/etc/edb/efm-5.0/main.nodes
+      - ./setup.sh:/setup.sh
+      - ./tmp/run:/var/run/postgresql
+    network_mode: host
+    ports:
+      - "7800:7800"
+    command: ["bash", "-c", "chmod +x ./setup.sh && ./setup.sh"]
