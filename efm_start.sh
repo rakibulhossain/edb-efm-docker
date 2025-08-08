@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+set -ex
 
 export EFMPASS="efm_password"
 ENCRYPTED_PASS=`(/usr/edb/efm-5.0/bin/efm encrypt main --from-env)`
