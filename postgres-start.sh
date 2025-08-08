@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -ex
+
 postgres
 while true
 do
