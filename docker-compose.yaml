@@ -31,9 +31,9 @@ services:
       - ./tmp/var/.pgpass:/var/lib/postgresql/.pgpass
       - ./main.properties:/etc/edb/efm-5.0/main.properties
       - ./main.nodes:/etc/edb/efm-5.0/main.nodes
-      - ./setup.sh:/setup.sh
+      - ./efm_start.sh:/efm_start.sh
       - ./tmp/run:/var/run/postgresql
     network_mode: host
     ports:
       - "7800:7800"
-    command: ["bash", "-c", "chmod +x ./setup.sh && ./setup.sh"]
+    command: ["bash", "-c", "chmod +x ./efm_start.sh && ./efm_start.sh"]
